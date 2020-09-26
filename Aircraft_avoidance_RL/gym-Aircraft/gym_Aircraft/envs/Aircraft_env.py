@@ -119,17 +119,17 @@ class AircraftEnv(gym.Env):
 
         if self.t_step>len(t)-1:
             done=True
-            reward=10*np.exp(1)*np.log(self.r/100)/(self.r/100)
+            reward=100*np.exp(1)*np.log(self.r/100)/(self.r/100)
         if self.r>=5000:
             done=True
-            reward=10*np.exp(1)*np.log(self.r/100)/(self.r/100)
+            reward=100*np.exp(1)*np.log(self.r/100)/(self.r/100)
         if self.r<=dist_sep:
-            reward=-10
+            reward=-100
             done=True
 
-        if self.t_step>3 and self.r>dist_sep and abs(self.elev)<40*Deg2Rad and abs(self.azim)<40*Deg2Rad:
+        if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
             done=True
-#             reward=100*np.exp(1)*np.log(self.r/100)/(self.r/100)
+            reward=100*np.exp(1)*np.log(self.r/100)/(self.r/100)
 
         if not done:
             if action == 0:
@@ -147,18 +147,18 @@ class AircraftEnv(gym.Env):
             else:
                 warnings.warn("The action should be 0 or 1 or 2 but other was detected.")
             
-            self.h_cmd_integ+=self.hdot_cmd*dt
+            self.h_cmd_integ+=np.abs(self.hdot_cmd)*dt
             
-            dotX = model(self.X[self.t_step, :], t[self.t_step], self.hdot_cmd)
-            self.X[self.t_step + 1, :] = self.X[self.t_step, :] + 0.5 * (3 * dotX - self.dotX_p) * dt
-            self.dotX_p = dotX
+            self.dotX = model(self.X[self.t_step, :], t[self.t_step], self.hdot_cmd)
+            self.X[self.t_step + 1, :] = self.X[self.t_step, :] + 0.5 * (3 * self.dotX - self.dotX_p) * dt
+            self.dotX_p = self.dotX
             self.Pt_NED = self.Pt_NED + self.Vt_NED * dt
 
 
-            a, adot, h, self.hdot, R = self.X[self.t_step+1,:]
+            self.a, self.adot, self.h, self.hdot, self.R = self.X[self.t_step+1,:]
 
             self.gamma = np.arcsin(self.hdot/self.Vm)
-            self.theta = self.gamma + a*Acc2AoA + AoA0
+            self.theta = self.gamma + self.a*Acc2AoA + AoA0
 
             self.DCM = np.zeros((3,3))
             self.DCM[0,0] =  np.cos(self.theta)
@@ -167,7 +167,7 @@ class AircraftEnv(gym.Env):
             self.DCM[2,0] =  np.sin(self.theta)
             self.DCM[2,2] =  np.cos(self.theta)
 
-            self.Pm_NED = np.array([R, 0, -h])
+            self.Pm_NED = np.array([self.R, 0, -self.h])
             self.Vm_NED = np.array([self.Vm*np.cos(self.gamma), 0, -self.Vm*np.sin(self.gamma)])
 
             self.Pr_NED = self.Pt_NED - self.Pm_NED
@@ -194,7 +194,7 @@ class AircraftEnv(gym.Env):
             self.daz_p = self.daz
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
-            reward=-(0.5*self.h_cmd_integ)
+            reward=-(100*self.h_cmd_integ)
 #             reward=np.exp(1)*np.log(self.r/100)/(self.r/100)
 #             reward=-(0.5*self.h_cmd_integ+0.5*self.h_cmd_count)
 
