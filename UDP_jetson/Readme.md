@@ -1,0 +1,26 @@
+
+## UDP_jetson
+본 폴더의 내용은 학습된 모델을 jetxon xavier에 얹기 위해 작성된 UDP 코드이다.
+
+## IP Setting
+UDPjetson-fin.ipynb 파일을 보면, setCMD 함수와 소켓을 정의해 두었다. 해당 코드는 다음과 같다.
+```python
+def setCMD(mode,roll, alpha, thrust,DBPAStakeOver):
+    cmdPacket[0] = header1
+    cmdPacket[1] = header2
+    cmdPacket[2] = mode
+    cmdPacket[3] = roll
+    alpha=int(alpha)
+    cmdPacket[4] = alpha
+    cmdPacket[5] = thrust
+    cmdPacket[6] = DBPAStakeOver
+    sock.sendto(cmdPacket,('163.180.116.56', 11000))
+```
+```python
+import socket
+results=[]
+sock=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(("163.180.116.46",55666))
+```
+
+여기서 163.180.116.46은 xavier에 할당된 IP이고, 55666은 xavier에서 개방한 port이다. 마찬가지로, 163.180.116.56은 항공기 시뮬레이터(Unity)가 올려져있는 서버의 IP이고, 11000은 서버에서 개방한 port이다. 서버와 xavier는 해당 경로들로 서로 패킷을 주고받는다.
