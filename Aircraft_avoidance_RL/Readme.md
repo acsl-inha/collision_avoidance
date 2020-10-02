@@ -5,10 +5,10 @@
 
 | Directory | Contibutors | Remark |
 | --- | --- | --- |
-| [1.non_cmd_dqn](Aircraft_avoidance_RL/1.non_cmd_dqn) | 박건우 | First DQN Model |
-| [2.non_cmd_dqn_step_reward](Aircraft_avoidance_RL/2.non_cmd_dqn_step_reward) | 박건우 | DQN with step reward |
-| [3.down_cmd_dqn](Aircraft_avoidance_RL/3.down_cmd_dqn) | 박건우 | down cmd env |
-| [4.down_cmd_dqn_step_reward](Aircraft_avoidance_RL/4.down_cmd_dqn_step_reward) | 박건우 | down cmd env add step reward |
-| [5.down_cmd_dqn_long_sim](Aircraft_avoidance_RL/5.down_cmd_dqn_long_sim) | 박건우 | down cmd env with longer sim |
-| [6.non_cmd_rainbow](Aircraft_avoidance_RL/6.non_cmd_rainbow) | 박건우 | Rainbow DQN |
+| [1.non_cmd_dqn](./1.non_cmd_dqn) | 박건우 | First DQN Model |
+| [2.non_cmd_dqn_step_reward](./2.non_cmd_dqn_step_reward) | 박건우 | DQN with step reward |
+| [3.down_cmd_dqn](./3.down_cmd_dqn) | 박건우 | down cmd env |
+| [4.down_cmd_dqn_step_reward](./4.down_cmd_dqn_step_reward) | 박건우 | down cmd env add step reward |
+| [5.down_cmd_dqn_long_sim](./5.down_cmd_dqn_long_sim) | 박건우 | down cmd env with longer sim |
+| [6.non_cmd_rainbow](./6.non_cmd_rainbow) | 박건우 | Rainbow DQN |
 
