@@ -55,7 +55,7 @@ class AircraftEnv(gym.Env):
 
 
         # target initial conditions
-        self.ht0 = 1000 + 200 * np.random.randn()
+        self.ht0 = 1000 + 10+abs(50*np.random.randn())
         self.Vt = 200
         self.approach_angle = 50 * Deg2Rad * (2 * np.random.rand() - 1)
         self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * Deg2Rad
@@ -117,16 +117,16 @@ class AircraftEnv(gym.Env):
         reward = 0
 
         if self.t_step>len(t)-1:
-            reward=0
+            reward=1
             done=True
         if self.r>=5000:
-            reward=0
+            reward=1
             done=True
         if self.r<=dist_sep:
-            reward=0
+            reward=-100
             done=True
         if self.t_step>200 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
-            reward=0
+            reward=1
             done=True
 
         if not done:
@@ -191,8 +191,7 @@ class AircraftEnv(gym.Env):
             self.daz_p = self.daz
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
-            
-            reward=np.abs(self.hdot_cmd)*(-1)
+            reward=1
 
 
         return self._state.flatten(),reward,done,[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]
