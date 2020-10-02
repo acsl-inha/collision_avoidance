@@ -55,14 +55,14 @@ class AircraftEnv(gym.Env):
 
 
         # target initial conditions
-        self.ht0 = 1000 + 200 * np.random.randn()
+        self.ht0 = 1000 + 10+abs(50*np.random.randn())
         self.Vt = 200
         self.approach_angle = 50 * Deg2Rad * (2 * np.random.rand() - 1)
         self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * Deg2Rad
         self.psi0 = np.arctan2(np.sin(self.psi0), np.cos(self.psi0))
 
-        self.Pt_N = 2000 * (1 + np.cos(self.approach_angle))
-        self.Pt_E = 2000 * np.sin(self.approach_angle)
+        self.Pt_N = 4000 * (1 + np.cos(self.approach_angle))
+        self.Pt_E = 4000 * np.sin(self.approach_angle)
         self.Pt_D = -self.ht0
         self.Pt_NED = np.array([self.Pt_N, self.Pt_E, self.Pt_D])  # initial NED position
         self.Vt_NED = np.array([self.Vt * np.cos(self.psi0), self.Vt * np.sin(self.psi0), 0])  # initial NED velocity
@@ -110,23 +110,23 @@ class AircraftEnv(gym.Env):
 
         self.action_space = spaces.Discrete(3)
         self.observation_space = spaces.Box(np.array([0, -400, -np.pi, -2*np.pi, -2*np.pi]),
-                                                        np.array([6000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
+                                                        np.array([10000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
 
     def step(self, action):
         done = False
         reward = 0
 
         if self.t_step>len(t)-1:
-            reward=0
+            reward=10000*np.log(self.r/100*np.exp(1))/(self.r)
             done=True
-        if self.r>=5000:
-            reward=0
+        if self.r>=10000:
+            reward=10000*np.log(self.r/100*np.exp(1))/(self.r)
             done=True
         if self.r<=dist_sep:
             reward=0
             done=True
-        if self.t_step>200 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
-            reward=0
+        if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
+            reward=10000*np.log(self.r/100*np.exp(1))/(self.r)
             done=True
 
         if not done:
@@ -191,8 +191,7 @@ class AircraftEnv(gym.Env):
             self.daz_p = self.daz
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
-            
-            reward=np.abs(self.hdot_cmd)*(-1)
+          
 
 
         return self._state.flatten(),reward,done,[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]
