@@ -3,18 +3,18 @@
 
 # 구현 결과
 
-## Rewards after 1000 episodes 
-<img src="../res_img/down_cmd_rainbow_reward.png" width="40%">
+## Rewards after 10000 episodes 
+<img src="../res_img/down_cmd_min_dist_reward.png" width="40%">
 
-## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
-<img src="../res_img/down_cmd_rainbow_res.png" width="40%">
+## Results after 10000 episodes (hdot_cmd, h, r, elev, azim)
+<img src="../res_img/down_cmd_min_dist_res.png" width="40%">
 
 ## 3D plot
-<img src="../res_img/down_cmd_rainbow_3d.png" width="40%">
+<img src="../res_img/down_cmd_min_dist_3d.png" width="40%">
 
 ## Height plot
-<img src="../res_img/down_cmd_rainbow_height.png" width="40%">
+<img src="../res_img/down_cmd_min_dist_height.png" width="40%">
 
 결과를 보면, 의도와는 달리 수렴 결과가 위로 회피하는 결과를 보였다. 생각해보니 수렴 결과의 단일성이 없어서 그렇다는 결론이 나왔다. 위로 회피하던, 아래로 회피하던 둘 다 동일한 값을 reward를 받게 되기 때문에, 상대기가 본체보다 높은 고도에서 출발했다 하더라도, 그보다 더 높게 이동하여 회피 가능한 상황이 존재하면, 위로 회피하는 경우도 높은 reward를 받기 때문이다. 상대기가 본체보다 높은 고도에서 출발했을때, 이 요소가 수렴에 관여하려면 아무래도 종료 시점의 distance가 reward에 영향을 미쳐야 한다고 생각되어 reward를 수정하여 다시 실험을 진행하였다.
 
-[8.down_cmd_min_dist](../8.down_cmd_min_dist)
+[9.min_dist_cmd_retry](../9.min_dist_cmd_retry)
