@@ -11,4 +11,7 @@
 | [4.down_cmd_dqn_step_reward](./4.down_cmd_dqn_step_reward) | 박건우 | down cmd env add step reward |
 | [5.down_cmd_dqn_long_sim](./5.down_cmd_dqn_long_sim) | 박건우 | down cmd env with longer sim |
 | [6.non_cmd_rainbow](./6.non_cmd_rainbow) | 박건우 | Rainbow DQN |
+| [7.down_cmd_rainbow](./7.down_cmd_rainbow) | 박건우 | Rainbow DQN with down cmd env |
+| [8.down_cmd_min_dist](./8.down_cmd_min_dist) | 박건우 | Make up rewards for min dist cmd |
+| [9.min_dist_cmd_retry](./9.min_dist_cmd_retry) | 박건우 | Regulate rewards |
 
