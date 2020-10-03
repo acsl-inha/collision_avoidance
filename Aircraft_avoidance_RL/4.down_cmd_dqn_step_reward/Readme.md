@@ -1,4 +1,4 @@
-# non_cmd_dqn_step_reward
+# down_cmd_dqn_step_reward
 이전의 문제점을 해결하기 위해 새롭게 reward를 설정하였다. reward 변경내용은 다음과 같다.
 - 충돌시 -1, 회피시 0의 reward를 반환 (에피소드 종료시에만 적용) -> 충돌하지 않았을 경우 매 스텝마다 1씩 반환, 충돌시 -100반환
 
