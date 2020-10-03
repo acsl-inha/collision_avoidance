@@ -4,7 +4,7 @@
 
 # 구현 결과
 
-## Rewards after 10000 episodes (Moving average 100)
+## Rewards after 10000 episodes (Moving average 200)
 <img src="../res_img/down_cmd_reward.JPG" width="40%">
 
 ## Results after 10000 episodes (hdot_cmd, h, r, elev, azim)
