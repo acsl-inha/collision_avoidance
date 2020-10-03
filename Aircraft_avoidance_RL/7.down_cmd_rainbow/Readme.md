@@ -4,7 +4,7 @@
 
 # 구현 결과
 
-## Rewards after 1000 episodes 
+## Rewards after 1000 episodes (Moving average 10)
 <img src="../res_img/down_cmd_rainbow_reward.png" width="40%">
 
 ## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
