@@ -1,7 +1,7 @@
 # down_cmd_min_dist
 시작고도가 회피 방향에 영향이 미치도록, 회피 직후의 거리가 reward에 영향이 미치도록 수정하였다. 또한 회피 이후에 시야 밖에서 에피소드가 진행되면, 에피소드 종료시 거리가 회피 직후의 거리와는 달라지므로, 다시 상대기가 시야 밖으로 나가면 에피소드가 종료되도록 수정하였다. 최종적인 reward는 다음과 같다.
 
-- 회피 시 : <img src="../res_img/reward_func.gif" width="40%">
+- 회피 시 : <img src="../res_img/reward_func.gif" width="10%">
 
 - 충돌 시 : 0
 
