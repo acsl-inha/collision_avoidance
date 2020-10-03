@@ -1,21 +1,20 @@
-# non_cmd_rainbow
-새롭게 Rainbow DQN을 적용하여 실험을 진행하였다. 환경 검증을 위해 먼저 고도변화를 주지 않는 실험을 진행하였다. Reward는 고도변화 명령을 줬을때는 고도 변화 명령값의 절대값에 -1을 곱하여 반환했고,
-고도변화 명령을 주지 않은경우에는 0을 반환했다.
+# down_cmd_min_dist
+아래 방향으로의 학습을 위해, 고도 변화 명령에 관한 reward를 빼고, 충돌에 관련한 reward만을 남겨두었다. "5.down_cmd_dqn_long_sim"과 마찬가지로 시나리오 종료조건이 완화된 상태로 수정되어 학습되었고, reward는 충돌시 -100을 반환하고, 충돌 하지 않은 경우 매 스텝마다 1을 반환하도록 구현되었다.
 
 # 구현 결과
 
 ## Rewards after 1000 episodes 
-<img src="../res_img/non_cmd_rainbow_reward.png" width="40%">
+<img src="../res_img/down_cmd_rainbow_reward.png" width="40%">
 
 ## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
-<img src="../res_img/non_cmd_rainbow_res.png" width="40%">
+<img src="../res_img/down_cmd_rainbow_res.png" width="40%">
 
 ## 3D plot
-<img src="../res_img/non_cmd_rainbow_3d.png" width="40%">
+<img src="../res_img/down_cmd_rainbow_3d.png" width="40%">
 
 ## Height plot
-<img src="../res_img/non_cmd_rainbow_height.png" width="40%">
+<img src="../res_img/down_cmd_rainbow_height.png" width="40%">
 
-결과를 보면, 이전과는 달리 1000개의 episodes만으로도 매우 이상적으로 수렴했음을 확인 할 수 있다. 따라서 이를 기반으로 아래 고도 명령을 주는 실험을 다시 진행하였다.
+결과를 보면, 의도와는 달리 수렴 결과가 위로 회피하는 결과를 보였다. 생각해보니 수렴 결과의 단일성이 없어서 그렇다는 결론이 나왔다. 위로 회피하던, 아래로 회피하던 둘 다 동일한 값을 reward를 받게 되기 때문에, 상대기가 본체보다 높은 고도에서 출발했다 하더라도, 그보다 더 높게 이동하여 회피 가능한 상황이 존재하면, 위로 회피하는 경우도 높은 reward를 받기 때문이다. 상대기가 본체보다 높은 고도에서 출발했을때, 이 요소가 수렴에 관여하려면 아무래도 종료 시점의 distance가 reward에 영향을 미쳐야 한다고 생각되어 reward를 수정하여 다시 실험을 진행하였다.
 
-[7.down_cmd_rainbow](../7.down_cmd_rainbow)
+[8.down_cmd_min_dist](../8.down_cmd_min_dist)
