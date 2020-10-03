@@ -24,6 +24,6 @@ reward는 에피소드가 종료될때 고도 변화 명령값의 절대값을 �
 ## 3D plot
 <img src="../res_img/non_cmd_3d.JPG" width="40%">
 
-구현 결과를 보면, Reward의 수렴이 잘 이루어지지 않았다. 따라서 기존에 구현되어 있는 cartpole 환경처럼 매 스텝마다 extrinsic 하게 reward를 제공해보려 한다. 
+구현 결과를 보면, Reward의 수렴이 잘 이루어지지 않았다. 따라서 기존에 구현되어 있는 cartpole 환경처럼 매 스텝마다 reward를 제공해보려 한다. 
 
 [2.non_cmd_dqn_step_reward](../2.non_cmd_dqn_step_reward)
