@@ -7,7 +7,7 @@
  - 매 스텝마다 hcmd의 절대값에 -0.05를 곱하여 반환
  
  # 구현 결과
-## Rewards after 10000 episodes (Moving average 200)
+## Rewards after 10000 episodes (Moving average 100)
 <img src="../res_img/down_cmd_step_reward.png" width="40%">
 
 ## Results after 10000 episodes (hdot_cmd, h, r, elev, azim)
@@ -22,4 +22,4 @@
  여전히 수렴이 잘 진행되지 않았다. hcmd를 주지 않았을때 회피 하는 경우(애초에 충돌조건에 해당되지 않는 에피소드)가 존재하여
  이 부분을 최대한 제거하고 거의 무조건 충돌조건이도록 환경을 수정하여 실험해 보려 한다.
  
- [5.down_cmd_dqn_long_sim](../5.down_cmd_dqn_long_sim)
+ [10.must_col_env](../10.must_col_env)
