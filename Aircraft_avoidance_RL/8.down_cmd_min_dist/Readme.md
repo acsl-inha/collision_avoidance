@@ -29,4 +29,4 @@
 
 결과를 보면 여전히 의도와는 달리 위로 회피가 진행되었다. 아무래도 거리 값에 대한 Reward 변화가 좀 더 극단적일 필요가 있어보인다. 다시 reward를 수정하여 진행해 보려 한다.
 
-[9.min_dist_cmd_retry](../9.min_dist_cmd_retry)
+[9.release_cmd](../9.release_cmd)
