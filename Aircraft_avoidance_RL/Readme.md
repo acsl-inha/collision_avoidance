@@ -13,7 +13,7 @@
 | [6.non_cmd_rainbow](./6.non_cmd_rainbow) | 박건우 | Rainbow DQN |
 | [7.down_cmd_rainbow](./7.down_cmd_rainbow) | 박건우 | Rainbow DQN with down cmd env |
 | [8.down_cmd_min_dist](./8.down_cmd_min_dist) | 박건우 | Make up rewards for min dist cmd |
-| [9.min_dist_cmd_retry](./9.min_dist_cmd_retry) | 박건우 | Regulate rewards |
+| [9.release_cmd](./9.release_cmd) | 박건우 | Regulate rewards |
 | [10.must_col_env](./10.must_col_env) | 박건우 | Change env to collide always |
 | [11.min_dist_avoid](./11.min_dist_avoid) | 박건우 | Make up rewards for min dist cmd |
 | [12.reward_retry](./12.reward_retry) | 박건우 | Regulate rewards |
