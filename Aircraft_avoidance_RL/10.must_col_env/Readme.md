@@ -1,16 +1,11 @@
-# release_cmd
-이전에 reward를 좀 더 극단적으로 줘보려 했으나, 사실 회피하는것에 수렴함을 확인 했기 때문에, 일단은 이점은 뒤로하고,
- hcmd에 대한 reward와 회피에 대한 reward를 같이 묶어보려한다. 주어진 reward는 다음과 같다.
- 
- - 회피 시 100의 reward 반환
- - 충돌 시 -50의 reward 반환
- - 매 스텝마다 hcmd의 절대값에 -0.05를 곱하여 반환
+# must_col_env
+이전에는 아래로만 회피하는 상황을 만들기 위해 상대기가 늘 본체보다 높은고도에서 출발하도록 되어있었다. 그러나 이 경우에 가만히만 있어도 회피되는, 즉 애초에 충돌하지 않는 상황이 발생하여, 이를 일단 동일고도로 수정하여 충돌하는 상황이 거의 대부분이도록 상황을 조정해 보았다.
  
  # 구현 결과
-## Rewards after 10000 episodes (Moving average 100)
+## Rewards after 1000 episodes (Moving average 100)
 <img src="../res_img/down_cmd_step_reward.png" width="40%">
 
-## Results after 10000 episodes (hdot_cmd, h, r, elev, azim)
+## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
 <img src="../res_img/down_cmd_step_res.png" width="40%">
 
 ## 3D plot
@@ -19,7 +14,6 @@
 ## Height plot
 <img src="../res_img/down_cmd_step_height.png" width="40%">
  
- 여전히 수렴이 잘 진행되지 않았다. hcmd를 주지 않았을때 회피 하는 경우(애초에 충돌조건에 해당되지 않는 에피소드)가 존재하여
- 이 부분을 최대한 제거하고 거의 무조건 충돌조건이도록 환경을 수정하여 실험해 보려 한다.
+결과는 여전히 수렴되지 않는 상황이었다. 아예 회피후에 거리에 대한 최소거리 회피조건을 더 추가해볼까 하여 다시 실험해보았다.
  
- [10.must_col_env](../10.must_col_env)
+ [11.min_dist_avoid](../11.min_dist_avoid)
