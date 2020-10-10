@@ -1,10 +1,5 @@
-# release_cmd
-이전에 reward를 좀 더 극단적으로 줘보려 했으나, 사실 회피하는것에 수렴함을 확인 했기 때문에, 일단은 이점은 뒤로하고,
- hcmd에 대한 reward와 회피에 대한 reward를 같이 묶어보려한다. 주어진 reward는 다음과 같다.
- 
- - 회피 시 100의 reward 반환
- - 충돌 시 -50의 reward 반환
- - 매 스텝마다 hcmd의 절대값에 -0.05를 곱하여 반환
+# reward_retry_min_dist
+이전의 min_dist에서 사용했던 방식의 reward를 추가하여 재실험하였다.
  
  # 구현 결과
 ## Rewards after 10000 episodes (Moving average 200)
@@ -19,7 +14,6 @@
 ## Height plot
 <img src="../res_img/down_cmd_step_height.png" width="40%">
  
- 여전히 수렴이 잘 진행되지 않았다. hcmd를 주지 않았을때 회피 하는 경우(애초에 충돌조건에 해당되지 않는 에피소드)가 존재하여
- 이 부분을 최대한 제거하고 거의 무조건 충돌조건이도록 환경을 수정하여 실험해 보려 한다.
+다시 조정이 필요해 보인다. 생각을 해보니 hcmd를 적게 사용하도록 잘 수렴시킨다면, 최소거리 회피에 대한 reward를 따로 추가하지 않아도 되어야 한다. 따라서 이 term을 제외하고, 또 hcmd를 주는 시점이 에피소드 종료 직전 즈음인지, 에피소드 시작 지점인지에 대한 부분도 단일성이 보장되지 않기 때문데, 에피소드의 time step에 대한 term을 reward에 포함시켜 적용해보려 한다.
  
- [5.down_cmd_dqn_long_sim](../5.down_cmd_dqn_long_sim)
+ [14.reward_retry_add_time](../14.reward_retry_add_time)
