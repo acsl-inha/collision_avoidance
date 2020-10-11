@@ -1,6 +1,5 @@
-# release_cmd
-이전에 reward를 좀 더 극단적으로 줘보려 했으나, 사실 회피하는것에 수렴함을 확인 했기 때문에, 일단은 이점은 뒤로하고,
- hcmd에 대한 reward와 회피에 대한 reward를 같이 묶어보려한다. 주어진 reward는 다음과 같다.
+# reward_retry_add_time
+ 회피 기동의 단일성을 위해 reward에 time step term을 추가하였다. 이를 통해 hcmd 명령을 더 일찍 주는것이 더 높은 reward를 받도록 구현하였다. 수정한 reward는 다음과 같다.
  
  - 회피 시 100의 reward 반환
  - 충돌 시 -50의 reward 반환
