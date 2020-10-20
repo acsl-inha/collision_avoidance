@@ -16,4 +16,6 @@ Aircraft detection and Collision avoidance
 - 기존 supervised learning 된 모델을 기반으로 적합한 강화학습 Agent를 학습하여 기존 모델을 대체한다.
 
 현재까지 구현된 내용의 영상은 아래와 같다.
-<iframe width="640" height="360" src="https://youtu.be/hm3EEg3RjYE" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+
+[![Video Label](https://youtu.be/hm3EEg3RjYE/0.jpg)](https://youtu.be/hm3EEg3RjYE)
+
