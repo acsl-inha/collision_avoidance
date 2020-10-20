@@ -15,7 +15,7 @@ Aircraft detection and Collision avoidance
 - YOLOV3 알고리즘의 detect 성능을 높이기 위해 알고리즘을 조정한다.
 - 기존 supervised learning 된 모델을 기반으로 적합한 강화학습 Agent를 학습하여 기존 모델을 대체한다.
 
-현재까지 구현된 내용의 영상은 아래와 같다.
+현재까지 구현된 내용의 영상은 아래 링크와 같다.
 
-[![Video Label](https://youtu.be/hm3EEg3RjYE/0.jpg)](https://youtu.be/hm3EEg3RjYE)
+https://youtu.be/hm3EEg3RjYE
 
