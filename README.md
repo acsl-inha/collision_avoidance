@@ -7,7 +7,7 @@ Aircraft detection and Collision avoidance
 | [Aircraft_avoidance_RL](Aircraft_avoidance_RL) | 박건우 |
 | [Aircraft_detection](Aircraft_detection) | 이효건 | [results (notion)](https://www.notion.so/0a2f0a99d296481a835b91e44be43149?v=446672df0798481eab056e5cc5906e9e)
 | [UDP_jetson](UDP_jetson) | 박건우 |
-|YOLOV4 Deepstream|
+|YOLOV4 Deepstream | 박건우 |
 | DBPAS | 인하대학교 | https://drive.google.com/file/d/1IMLpdmeMIFQ4wNjOqwPxfTnxNvAgnTA8/view?usp=sharing |
 
 
