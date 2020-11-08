@@ -29,12 +29,23 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <gst/gst.h>
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
 
-#include "deepstream_app.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+#define PORT 4729
+#define MAXLINE 1024
+
+
+
+
+
+
+
 
 #define MAX_DISPLAY_LEN 64
 static guint batch_num = 0;
@@ -383,6 +394,15 @@ component_id_compare_func (gconstpointer a, gconstpointer b)
 static void
 process_meta (AppCtx * appCtx, NvDsBatchMeta * batch_meta)
 {
+  int sockfd;
+  char buffer[MAXLINE];
+  char *det = "Detection flag";
+  struct sockaddr_in servaddr;
+
+
+
+
+
   // For single source always display text either with demuxer or with tiler
   if (!appCtx->config.tiled_display_config.enable ||
       appCtx->config.num_source_sub_bins == 1) {
@@ -439,7 +459,7 @@ process_meta (AppCtx * appCtx, NvDsBatchMeta * batch_meta)
         }
       }
 
-      if ((obj->rect_params.left<200|obj->rect_params.left+ obj->rect_params.width>1700)&obj->rect_params.top<400)  // non detection for both sides
+        if (((obj->rect_params.left<200|obj->rect_params.left+ obj->rect_params.width>1700)&obj->rect_params.top<400)|(strcmp(obj->obj_label, "bird") && strcmp(obj->obj_label, "aeroplane")))  // non detection for both sides and detect only bird and aeroplane
       {
         appCtx->show_bbox_text=0;
       } else {
@@ -453,6 +473,18 @@ process_meta (AppCtx * appCtx, NvDsBatchMeta * batch_meta)
 
       if (!appCtx->show_bbox_text)
         continue;
+      else
+      {
+	  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	  memset(&servaddr, 0, sizeof(servaddr));
+	  servaddr.sin_family = AF_INET;
+	  servaddr.sin_port = htons(PORT);
+	  servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	  sendto(sockfd, (const char *)det, strlen(det),
+          MSG_CONFIRM, (const struct sockaddr *) &servaddr,
+          sizeof(servaddr));
+	  close(sockfd);
+      }
 
       obj->text_params.x_offset = obj->rect_params.left;
       obj->text_params.y_offset = obj->rect_params.top - 30;
@@ -470,8 +502,9 @@ process_meta (AppCtx * appCtx, NvDsBatchMeta * batch_meta)
       obj->text_params.display_text[0] = '\0';
       str_ins_pos = obj->text_params.display_text;
 
-      if (obj->obj_label[0] != '\0')
-        sprintf (str_ins_pos, "%s", "aircraft");
+      if (obj->obj_label[0] != '\0'){
+        sprintf (str_ins_pos, "%s", "aeroplane");
+      }
       str_ins_pos += strlen (str_ins_pos);
 
       if (obj->object_id != UNTRACKED_OBJECT_ID) {
