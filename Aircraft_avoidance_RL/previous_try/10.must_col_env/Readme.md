@@ -3,16 +3,16 @@
  
  # 구현 결과
 ## Rewards after 1000 episodes (Moving average 100)
-<img src="../res_img/down_cmd_step_reward.png" width="40%">
+<img src="../res_img/10_reward.png" width="40%">
 
 ## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
-<img src="../res_img/down_cmd_step_res.png" width="40%">
+<img src="../res_img/10_2d.png" width="40%">
 
 ## 3D plot
-<img src="../res_img/down_cmd_step_3d.png" width="40%">
+<img src="../res_img/10_3d.png" width="40%">
 
 ## Height plot
-<img src="../res_img/down_cmd_step_height.png" width="40%">
+<img src="../res_img/10_h.png" width="40%">
  
 결과는 여전히 수렴되지 않는 상황이었다. 아예 회피후에 거리에 대한 최소거리 회피조건을 더 추가해볼까 하여 다시 실험해보았다.
  
