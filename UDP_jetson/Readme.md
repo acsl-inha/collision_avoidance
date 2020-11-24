@@ -24,3 +24,8 @@ sock.bind(("163.180.116.46",55666))
 ```
 
 여기서 163.180.116.46은 jetson xavier에 할당된 IP이고, 55666은 jetson xavier에서 개방한 port이다. 마찬가지로, 163.180.116.56은 항공기 시뮬레이터(Unity)가 올려져있는 서버의 IP이고, 11000은 서버에서 개방한 port이다. 서버와 xavier는 해당 경로들로 서로 패킷을 주고받는다.
+
+UDPjetson-connected_proto_ver1.0.ipynb 파일을 보면, 추가적으로 YOLOV4 Deepstream의 Detection Flag를 받도록 구현이 되어있는데, Local(127.0.0.1)의 4729 port로 Flag를 받게 된다. 이를 간략히 그림으로 나타내면 아래와 같다.
+
+## Overview of UDP Communication
+<img src="./img/UDP_overview.PNG" width="80%">
