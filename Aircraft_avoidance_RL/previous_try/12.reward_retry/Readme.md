@@ -5,17 +5,17 @@
  - 충돌 시 -50-(hcmd 총합)*0.05 의 reward 반환
  
  # 구현 결과
-## Rewards after 10000 episodes (Moving average 200)
-<img src="../res_img/down_cmd_step_reward.png" width="40%">
+## Rewards after 1000 episodes (Moving average 100)
+<img src="../res_img/12_reward.png" width="40%">
 
-## Results after 10000 episodes (hdot_cmd, h, r, elev, azim)
-<img src="../res_img/down_cmd_step_res.png" width="40%">
+## Results after 1000 episodes (hdot_cmd, h, r, elev, azim)
+<img src="../res_img/12_2d.png" width="40%">
 
 ## 3D plot
-<img src="../res_img/down_cmd_step_3d.png" width="40%">
+<img src="../res_img/12_3d.png" width="40%">
 
 ## Height plot
-<img src="../res_img/down_cmd_step_height.png" width="40%">
+<img src="../res_img/12_h.png" width="40%">
  
 결과는 아직 마찬가지로 원하는 결과를 얻지 못했다.. 다음으로는 여기에다가 최소거리 충돌에 대한 reward를 다시 한번 추가해보려 한다.
  
