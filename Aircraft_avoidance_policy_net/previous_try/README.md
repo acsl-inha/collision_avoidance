@@ -5,7 +5,7 @@
  먼저 datagen.py를 이용하여 train과 test 데이터를 각 30만, 9만개씩 만들었다. 이때의 데이터는 입력 feature 5개(본체와 상대기체와의 상대거리(r), 본체와 상대기체와의 접근속도(vc), 본체와 상대기체와의 LOS(Line of Sight), 본체와 상대기체와의 Azimuth, Los의 변화량(dLOS), Azimuth의 변화량(dAzim))과 출력은 고도변화 명령(hdot_cmd)로 주어진다.
  항공기 본체는 주어진 데이터로부터 고도변화 명령에 대해 학습하여 기동하도록 하는것이 목적이다. 고도변화 명령은 총 세가지로, +20, 0 -20을 줄 수 있다.
 
- 가장 적합한 네트워크 구조를 찾기 위해 colision_avoidance_net_test.ipynb에 나온 코드처럼, 세가지 블록으로 나누어 네트워크를 설계했고, 결과적으로 40노드를 가진 2x3층짜리(각 블록에 2개의 층이 구성되어있고, 총 3개의 블록) FC layer의 성능이 가장 괜찮은 결과를 보여주었다. 이때 학습된 결과는 test 셋에 대하여 99프로의 정확도로 수렴하였다. 아래 그림은 학습 결과에 대한 Confusion matrix이다. 가로축이 출력값, 세로축이 타겟데이터를 의미한다.
+ colision_avoidance_net_test.ipynb에 나온 코드처럼, 세가지 블록으로 나누어 네트워크를 설계했고, 40노드를 가진 2x3층짜리(각 블록에 2개의 층이 구성되어있고, 총 3개의 블록) FC layer로 모델을 구성했다. 이때 학습된 결과는 test 셋에 대하여 99프로의 정확도로 수렴하였다. 아래 그림은 학습 결과에 대한 Confusion matrix이다. 가로축이 출력값, 세로축이 타겟데이터를 의미한다.
  ### Confusion matrix of result
  <img src="./res_img/train_res.JPG" width="40%">
 
