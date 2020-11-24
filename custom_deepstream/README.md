@@ -180,3 +180,33 @@ CHECK_CUSTOM_PARSE_FUNC_PROTOTYPE(NvDsInferParseCustomYoloV4);
 sudo make
 ```
 
+## UDP Flag
+deepstream_app.c 에 아래 항목을 추가하여 Local(127.0.0.1) 4729 port로 detection flag packet을 보내도록 하였다. 비행기나 새가 오른쪽 상단과 왼쪽 상단을 제외한 위치에 detect 되었을 때 detection flag packet 이 보내진다.
+```cpp
+if (((obj->rect_params.left<200|obj->rect_params.left+ obj->rect_params.width>1700)&obj->rect_params.top<400)|(strcmp(obj->obj_label, "bird") && strcmp(obj->obj_label, "aeroplane")))  // non detection for both sides and detect only bird and aeroplane
+      {
+        appCtx->show_bbox_text=0;
+      } else {
+        appCtx->show_bbox_text=1;
+      }
+
+        if (!appCtx->show_bbox_text)
+        {
+            obj->rect_params.border_width = 0;
+        }
+
+      if (!appCtx->show_bbox_text)
+        continue;
+      else
+      {
+          sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+          memset(&servaddr, 0, sizeof(servaddr));
+          servaddr.sin_family = AF_INET;
+          servaddr.sin_port = htons(PORT);
+          servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+          sendto(sockfd, (const char *)det, strlen(det),
+          MSG_CONFIRM, (const struct sockaddr *) &servaddr,
+          sizeof(servaddr));
+          close(sockfd);
+      }
+```
