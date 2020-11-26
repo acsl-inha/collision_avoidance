@@ -43,7 +43,7 @@ class AircraftEnv(gym.Env):
         self.size=size
         self._state=np.zeros(size)
         
-        self.h_cmd_integ=0
+        self.h_cmd_reward=0
 
         self.h_cmd_count=0
         
@@ -57,10 +57,10 @@ class AircraftEnv(gym.Env):
 
 
         # target initial conditions
-        self.ht0 = 1000 + 200 * np.random.randn()
+        self.ht0 = 1000 # + 10+abs(50*np.random.randn())
         self.Vt = 200
         self.approach_angle = 50 * Deg2Rad * (2 * np.random.rand() - 1)
-        self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * Deg2Rad
+        self.psi0 = np.pi + self.approach_angle # + 2 * np.random.randn() * Deg2Rad
         self.psi0 = np.arctan2(np.sin(self.psi0), np.cos(self.psi0))
 
         self.Pt_N = 2000 * (1 + np.cos(self.approach_angle))
@@ -112,24 +112,24 @@ class AircraftEnv(gym.Env):
 
         self.action_space = spaces.Discrete(3)
         self.observation_space = spaces.Box(np.array([0, -400, -np.pi, -2*np.pi, -2*np.pi]),
-                                                        np.array([6000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
+                                                        np.array([5000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
 
     def step(self, action):
         done = False
         reward = 0
 
         if self.t_step>len(t)-1:
-            reward=self.h_cmd_integ*(-1)
+            reward=1+self.h_cmd_reward
             done=True
         if self.r>=5000:
-            reward=self.h_cmd_integ*(-1)
+            reward=1+self.h_cmd_reward
             done=True
         if self.r<=dist_sep:
-            reward=self.h_cmd_integ*(-1)
+            reward=-1
             done=True
-        if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
-            reward=self.h_cmd_integ*(-1)
-            done=True
+#         if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
+#             reward=0
+            
 
         if not done:
             if action == 0:
@@ -146,8 +146,6 @@ class AircraftEnv(gym.Env):
                 self.hdot_cmd=10
             else:
                 warnings.warn("The action should be 0 or 1 or 2 but other was detected.")
-                
-            self.h_cmd_integ+=np.abs(self.hdot_cmd)*dt
             
             
             self.dotX = model(self.X[self.t_step, :], t[self.t_step], self.hdot_cmd)
@@ -195,7 +193,9 @@ class AircraftEnv(gym.Env):
             self.daz_p = self.daz
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
-
+            
+            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.0001)*self.t_step
+          
 
 
         return self._state.flatten(),reward,done,[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]
