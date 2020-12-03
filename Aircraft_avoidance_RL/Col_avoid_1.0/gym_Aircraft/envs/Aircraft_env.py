@@ -108,8 +108,6 @@ class AircraftEnv(gym.Env):
         self.gamma = self.gamma0
         self.vc0 = self.vc
 
-
-
         self.action_space = spaces.Discrete(3)
         self.observation_space = spaces.Box(np.array([0, -400, -np.pi, -2*np.pi, -2*np.pi]),
                                                         np.array([5000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
