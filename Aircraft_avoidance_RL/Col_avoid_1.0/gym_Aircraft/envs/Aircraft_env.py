@@ -117,10 +117,10 @@ class AircraftEnv(gym.Env):
         reward = 0
 
         if self.t_step>len(t)-1:
-            reward=1+self.h_cmd_reward
+            reward=5+self.h_cmd_reward
             done=True
         if self.r>=5000:
-            reward=1+self.h_cmd_reward
+            reward=5+self.h_cmd_reward
             done=True
         if self.r<=dist_sep:
             reward=-1
@@ -135,13 +135,13 @@ class AircraftEnv(gym.Env):
                      self.h_cmd_count+=1
                 self.hdot_cmd=0
             elif action == 1:
-                if self.hdot_cmd!=-10:
+                if self.hdot_cmd!=-20:
                      self.h_cmd_count+=1
-                self.hdot_cmd=-10
+                self.hdot_cmd=-20
             elif action == 2:
-                if self.hdot_cmd!=10:
+                if self.hdot_cmd!=20:
                      self.h_cmd_count+=1
-                self.hdot_cmd=10
+                self.hdot_cmd=20
             else:
                 warnings.warn("The action should be 0 or 1 or 2 but other was detected.")
             
@@ -192,10 +192,7 @@ class AircraftEnv(gym.Env):
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
             
-            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.0001)*self.t_step
-          
-
-
+            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.0000001)*self.t_step
         return self._state.flatten(),reward,done,[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]
 
 
