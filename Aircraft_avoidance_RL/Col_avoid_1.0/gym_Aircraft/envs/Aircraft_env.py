@@ -19,8 +19,14 @@ dist_sep = 100        # near mid-air collision range
 
 dt = 0.1              # control frequency
 tf = 30               # final time
-t = np.arange(0, tf, dt)
+t = np.arange(0, tf, dt)  # 300 steps
 N = len(t)
+
+# episode done conditions
+NOT_DONE = 0 
+CRASHED = 1
+AVOIDED_TIMEOUT = 2
+AVOIDED_IN_ADVANCE = 3
 
 
 def model(z, t, hdot_cmd):  # computes state derivatives
@@ -113,21 +119,22 @@ class AircraftEnv(gym.Env):
                                                         np.array([5000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
 
     def step(self, action):
-        done = False
+        done = 0
         reward = 0
 
-        if self.t_step>len(t)-1:
-            reward=5+self.h_cmd_reward
-            done=True
-        if self.r>=5000:
-            reward=5+self.h_cmd_reward
-            done=True
-        if self.r<=dist_sep:
-            reward=-1
-            done=True
-#         if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
-#             reward=0
-            
+        # Terminal conditions
+        if self.t_step > len(t):
+            # timeout but not crashed
+            reward = 200 #+ self.h_cmd_reward
+            done = AVOIDED_TIMEOUT
+        elif self.r >= 5000:
+            # getting out of the crash condition in advance of the timeout
+            reward = 400 #+ self.h_cmd_reward
+            done = AVOIDED_IN_ADVANCE
+        if self.r <= dist_sep:
+            # crashed
+            reward = -100
+            done = CRASHED
 
         if not done:
             if action == 0:
@@ -192,12 +199,26 @@ class AircraftEnv(gym.Env):
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
             
-            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.0000001)*self.t_step
-        return self._state.flatten(),reward,done,[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]
-
+            #self.h_cmd_reward += -1e-6 * np.abs(self.hdot_cmd) * self.t_step
+            reward += -np.abs(self.hdot_cmd) / 5
+            
+        return (
+            self._state.flatten(),
+            reward,
+            done,
+            [  # infos
+                self.hdot_cmd,
+                self.r,
+                self.elev,
+                self.azim,
+                self.Pm_NED,
+                self.Pt_NED,
+                self.h]
+        )
 
     def reset(self):
         self.__init__(size=self.size)
         return self._state
-    def render(self,mode='human',close=False):
+            
+    def render(self, mode='human', close=False):
         pass
