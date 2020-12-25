@@ -32,7 +32,7 @@ AVOIDED_IN_ADVANCE = 3
 def model(z, t, hdot_cmd):  # computes state derivatives
     Vm = 200
     a, adot, h, hdot, R = z  # state vector: a (pitch acc), adot, h (alt), hdot, R (ground-track range)
-    gamma = np.arcsin(hdot / Vm)  # fight path angle
+    gamma = np.arcsin(hdot / Vm)  # flight path angle
     ac = K_alt * (hdot_cmd - hdot) + g / np.cos(gamma)  # pitch acceleration command
     ac = np.clip(ac, -30, 30)  # maneuver limit
 
@@ -50,8 +50,6 @@ class AircraftEnv(gym.Env):
         self._state=np.zeros(size)
         
         self.h_cmd_reward=0
-
-        self.h_cmd_count=0
         
         self.t_step=0
         self.hm0 = 1000
@@ -60,7 +58,6 @@ class AircraftEnv(gym.Env):
         self.Pm_NED = np.array([0, 0, -self.hm0])
         self.Vm_NED = np.array([self.Vm * np.cos(self.gamma0), 0, -self.Vm * np.sin(self.gamma0)])
         self.X0 = np.array([g / np.cos(self.gamma0), 0, self.hm0, -self.Vm_NED[2], 0])
-
 
         # target initial conditions
         self.ht0 = 1000 # + 10+abs(50*np.random.randn())
@@ -115,8 +112,9 @@ class AircraftEnv(gym.Env):
         self.vc0 = self.vc
 
         self.action_space = spaces.Discrete(3)
-        self.observation_space = spaces.Box(np.array([0, -400, -np.pi, -2*np.pi, -2*np.pi]),
-                                                        np.array([5000, 400, np.pi, 2*np.pi, 2*np.pi])) # r, vc, los, daz, dlos`
+        self.observation_space = spaces.Box(
+            np.array([0,   -400, -np.pi, -2*np.pi, -2*np.pi]),
+            np.array([5000, 400,  np.pi,  2*np.pi,  2*np.pi])) # r, vc, los, daz, dlos`
 
     def step(self, action):
         done = 0
@@ -125,82 +123,37 @@ class AircraftEnv(gym.Env):
         # Terminal conditions
         if self.t_step > len(t):
             # timeout but not crashed
-            reward = 200 #+ self.h_cmd_reward
+#             reward = 200 #+ self.h_cmd_reward
             done = AVOIDED_TIMEOUT
         elif self.r >= 5000:
-            # getting out of the crash condition in advance of the timeout
-            reward = 400 #+ self.h_cmd_reward
+            # getting out of the crash condition in advance of timeout
+#             reward = 400 #+ self.h_cmd_reward
             done = AVOIDED_IN_ADVANCE
         if self.r <= dist_sep:
             # crashed
-            reward = -100
+#             reward = -5
             done = CRASHED
 
         if not done:
             if action == 0:
-                if self.hdot_cmd!=0:
-                     self.h_cmd_count+=1
-                self.hdot_cmd=0
+                self.hdot_cmd = 0
             elif action == 1:
-                if self.hdot_cmd!=-20:
-                     self.h_cmd_count+=1
-                self.hdot_cmd=-20
+                self.hdot_cmd = -RoC
             elif action == 2:
-                if self.hdot_cmd!=20:
-                     self.h_cmd_count+=1
-                self.hdot_cmd=20
+                self.hdot_cmd = RoC
             else:
                 warnings.warn("The action should be 0 or 1 or 2 but other was detected.")
+                
+            self._dynamics()
             
-            
-            self.dotX = model(self.X[self.t_step, :], t[self.t_step], self.hdot_cmd)
-            self.X[self.t_step + 1, :] = self.X[self.t_step, :] + 0.5 * (3 * self.dotX - self.dotX_p) * dt
-            self.dotX_p = self.dotX
-            self.Pt_NED = self.Pt_NED + self.Vt_NED * dt
-
-
-            self.a, self.adot, self.h, self.hdot, self.R = self.X[self.t_step+1,:]
-
-            self.gamma = np.arcsin(self.hdot/self.Vm)
-            self.theta = self.gamma + self.a*Acc2AoA + AoA0
-
-            self.DCM = np.zeros((3,3))
-            self.DCM[0,0] =  np.cos(self.theta)
-            self.DCM[0,2] = -np.sin(self.theta)
-            self.DCM[1,1] =  1
-            self.DCM[2,0] =  np.sin(self.theta)
-            self.DCM[2,2] =  np.cos(self.theta)
-
-            self.Pm_NED = np.array([self.R, 0, -self.h])
-            self.Vm_NED = np.array([self.Vm*np.cos(self.gamma), 0, -self.Vm*np.sin(self.gamma)])
-
-            self.Pr_NED = self.Pt_NED - self.Pm_NED
-            self.Vr_NED = self.Vt_NED - self.Vm_NED
-
-            self.Pr_Body = np.dot(self.DCM, self.Pr_NED)
-
-            self.r = np.linalg.norm(self.Pr_Body)
-            self.vc = -np.dot(self.Pr_NED, self.Vr_NED)/self.r
-            self.elev = np.arctan2(self.Pr_Body[2], self.Pr_Body[0])
-            self.azim = np.arctan2(self.Pr_Body[1], self.Pr_Body[0]/np.cos(self.theta))
-
-            psi = np.arctan2(self.Vt_NED[1], self.Vt_NED[0])
-
-            # los rate and az rate estimation
-            self.los = self.theta - self.elev
-
-            self.dlos = ( 30*(self.los-self.los_p) + 0*self.dlos_p ) / 3 # filtered LOS rate, F(s)=20s/(s+20)
-            self.daz = ( 30*(self.azim-self.azim_p) + 0*self.daz_p ) / 3 # filtered azim rate, F(s)=20s/(s+20)
-
-            self.los_p = self.los
-            self.dlos_p = self.dlos
-            self.azim_p = self.azim
-            self.daz_p = self.daz
-            self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
-            self.t_step+=1
-            
-            #self.h_cmd_reward += -1e-6 * np.abs(self.hdot_cmd) * self.t_step
-            reward += -np.abs(self.hdot_cmd) / 5
+#             reward += -np.abs(self.hdot_cmd) / 5
+            h = self.X[self.t_step, :][2]
+            h_diff = np.abs(h - self.ht0)
+            hddot, Rdot = self.dotX[3:]
+            reward += 1e-3 * -np.abs(hddot)  # hddot이 핸들 꺾는 정도
+            reward += self.r  * np.abs(self.dlos) * (self.r > 300)  # los 가 0에서 벗어난 정도로 회피가능성 판단 가능, 너무 가까우면 보상이 너무 크니 300m 보다 멀 때만으로 제한
+            reward += 1e-3 * -h_diff * (1 if h_diff < 40 else 2) * (self.vc < 0)  # 처음 상태와의 고도차이, 너무 크면 크게 penalize, 멀어질 때만
+            reward += 1. * (self.vc < 0)  # 멀어지는 상태에서는 양의 보상
             
         return (
             self._state.flatten(),
@@ -222,3 +175,49 @@ class AircraftEnv(gym.Env):
             
     def render(self, mode='human', close=False):
         pass
+    
+    def _dynamics(self):
+        self.dotX = model(self.X[self.t_step, :], t[self.t_step], self.hdot_cmd)
+        self.X[self.t_step + 1, :] = self.X[self.t_step, :] + 0.5 * (3 * self.dotX - self.dotX_p) * dt
+        self.dotX_p = self.dotX
+        self.Pt_NED = self.Pt_NED + self.Vt_NED * dt
+
+        self.a, self.adot, self.h, self.hdot, self.R = self.X[self.t_step+1,:]
+
+        self.gamma = np.arcsin(self.hdot/self.Vm)
+        self.theta = self.gamma + self.a*Acc2AoA + AoA0
+
+        self.DCM = np.zeros((3,3))
+        self.DCM[0,0] =  np.cos(self.theta)
+        self.DCM[0,2] = -np.sin(self.theta)
+        self.DCM[1,1] =  1
+        self.DCM[2,0] =  np.sin(self.theta)
+        self.DCM[2,2] =  np.cos(self.theta)
+
+        self.Pm_NED = np.array([self.R, 0, -self.h])
+        self.Vm_NED = np.array([self.Vm*np.cos(self.gamma), 0, -self.Vm*np.sin(self.gamma)])
+
+        self.Pr_NED = self.Pt_NED - self.Pm_NED
+        self.Vr_NED = self.Vt_NED - self.Vm_NED
+
+        self.Pr_Body = np.dot(self.DCM, self.Pr_NED)
+
+        self.r = np.linalg.norm(self.Pr_Body)
+        self.vc = -np.dot(self.Pr_NED, self.Vr_NED)/self.r
+        self.elev = np.arctan2(self.Pr_Body[2], self.Pr_Body[0])
+        self.azim = np.arctan2(self.Pr_Body[1], self.Pr_Body[0]/np.cos(self.theta))
+
+        psi = np.arctan2(self.Vt_NED[1], self.Vt_NED[0])
+
+        # los rate and az rate estimation
+        self.los = self.theta - self.elev
+
+        self.dlos = ( 30*(self.los-self.los_p) + 0*self.dlos_p ) / 3 # filtered LOS rate, F(s)=20s/(s+20)
+        self.daz = ( 30*(self.azim-self.azim_p) + 0*self.daz_p ) / 3 # filtered azim rate, F(s)=20s/(s+20)
+
+        self.los_p = self.los
+        self.dlos_p = self.dlos
+        self.azim_p = self.azim
+        self.daz_p = self.daz
+        self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
+        self.t_step+=1
