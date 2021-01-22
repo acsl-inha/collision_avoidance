@@ -48,7 +48,7 @@ class AircraftEnv(gym.Env):
         self.h_cmd_count=0
         
         self.t_step=0
-        self.hm0 = 1000
+        self.hm0 = 1050
         self.Vm = 200
         self.gamma0 = 0*Deg2Rad
         self.Pm_NED = np.array([0, 0, -self.hm0])
@@ -57,10 +57,10 @@ class AircraftEnv(gym.Env):
 
 
         # target initial conditions
-        self.ht0 = 1000 + 10+abs(50*np.random.randn())
+        self.ht0 = 1000 # + 10+abs(50*np.random.randn())
         self.Vt = 200
-        self.approach_angle = 50 * Deg2Rad * (2 * np.random.rand() - 1)
-        self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * Deg2Rad
+        self.approach_angle = 0  # 50 * Deg2Rad * (2 * np.random.rand() - 1)
+        self.psi0 = np.pi + self.approach_angle # + 2 * np.random.randn() * Deg2Rad
         self.psi0 = np.arctan2(np.sin(self.psi0), np.cos(self.psi0))
 
         self.Pt_N = 2000 * (1 + np.cos(self.approach_angle))
@@ -119,17 +119,18 @@ class AircraftEnv(gym.Env):
         reward = 0
 
         if self.t_step>len(t)-1:
-            reward=100+self.h_cmd_reward
+            reward=1+self.h_cmd_reward
             done=True
         if self.r>=5000:
-            reward=100+self.h_cmd_reward
+            reward=1+self.h_cmd_reward
             done=True
         if self.r<=dist_sep:
-            reward=0+self.h_cmd_reward
+            reward=-1
             done=True
         if self.t_step>3 and self.r>dist_sep and abs(self.elev)>40*Deg2Rad and abs(self.azim)>40*Deg2Rad:
-            reward=100+self.h_cmd_reward
+            reward=1+self.h_cmd_reward
             done=True
+            
 
         if not done:
             if action == 0:
@@ -137,13 +138,13 @@ class AircraftEnv(gym.Env):
                      self.h_cmd_count+=1
                 self.hdot_cmd=0
             elif action == 1:
-                if self.hdot_cmd!=-10:
+                if self.hdot_cmd!=-20:
                      self.h_cmd_count+=1
-                self.hdot_cmd=-10
+                self.hdot_cmd=-20
             elif action == 2:
-                if self.hdot_cmd!=10:
+                if self.hdot_cmd!=20:
                      self.h_cmd_count+=1
-                self.hdot_cmd=10
+                self.hdot_cmd=20
             else:
                 warnings.warn("The action should be 0 or 1 or 2 but other was detected.")
             
@@ -194,7 +195,7 @@ class AircraftEnv(gym.Env):
             self._state=np.array([self.r,self.vc,self.los,self.daz,self.dlos])
             self.t_step+=1
             
-            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.0025)*self.t_step
+            self.h_cmd_reward+=np.abs(self.hdot_cmd)*(-0.00002)*self.t_step
           
 
 
