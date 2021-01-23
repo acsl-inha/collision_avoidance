@@ -112,16 +112,19 @@ class AircraftEnv(gym.Env):
 
         # set end condition
         if self.t_step>len(self.t)-1:
-            reward=0
+            reward=100
             done=True
         if self.r>=5000:
-            reward=0
+            reward=100
             done=True
         if self.r<=self.dist_sep:
             reward=-100
             done=True
         if self.t_step>3 and self.r>self.dist_sep and abs(self.elev)>40*self.Deg2Rad and abs(self.azim)>40*self.Deg2Rad:
-            reward=0
+            if self.r<=self.dist_sep:
+                reward=-100
+            if self.r>self.dist_sep:
+                reward=100
             done=True
             
         # make a step and observe next state
@@ -185,7 +188,7 @@ class AircraftEnv(gym.Env):
             
             self.t_step+=1
             
-            reward=np.abs(self.hdot_cmd)*(-0.0002)
+            reward=np.abs(self.hdot_cmd)*(-0.1)
 
         return self._state.flatten(),reward,done,{"info":[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]}
 
