@@ -42,7 +42,7 @@ class AircraftEnv(gym.Env):
         self.ht0 = 1000 +abs(50*np.random.randn())
         self.Vt = 200
         self.approach_angle = 50 * self.Deg2Rad * (2 * np.random.rand() - 1)
-        self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * self.Deg2Rad
+        self.psi0 = np.pi + self.approach_angle # + 2 * np.random.randn() * self.Deg2Rad
         self.psi0 = np.arctan2(np.sin(self.psi0), np.cos(self.psi0))
         self.Pt_N = 2000 * (1 + np.cos(self.approach_angle))
         self.Pt_E = 2000 * np.sin(self.approach_angle)
@@ -111,29 +111,20 @@ class AircraftEnv(gym.Env):
         reward = 0
 
         # set end condition
-        if self.r<=self.dist_sep:
-            reward=-1000
+        if self.t_step>len(self.t)-1:
+            reward=100
             done=True
-            
-        if self.t_step>len(self.t)-1: 
-            if self.r<=self.dist_sep:
-                reward=-1000
-            if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
-            done=True
-            
         if self.r>=5000:
-            if self.r<=self.dist_sep:
-                reward=-1000
-            if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
+            reward=100
             done=True
-            
+        if self.r<=self.dist_sep:
+            reward=-100
+            done=True
         if self.t_step>3 and self.r>self.dist_sep and abs(self.elev)>40*self.Deg2Rad and abs(self.azim)>40*self.Deg2Rad:
             if self.r<=self.dist_sep:
-                reward=-1000
+                reward=-100
             if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
+                reward=100
             done=True
             
         # make a step and observe next state
@@ -197,7 +188,7 @@ class AircraftEnv(gym.Env):
             
             self.t_step+=1
             
-            reward=np.abs(self.hdot_cmd)*(-0.05)*self.t_step
+            reward=np.abs(self.hdot_cmd)*(-0.1)
 
         return self._state.flatten(),reward,done,{"info":[self.hdot_cmd,self.r,self.elev,self.azim,self.Pm_NED,self.Pt_NED,self.h]}
 
