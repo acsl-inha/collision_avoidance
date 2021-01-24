@@ -111,29 +111,20 @@ class AircraftEnv(gym.Env):
         reward = 0
 
         # set end condition
+        if self.t_step>len(self.t)-1:
+            reward=5000
+            done=True
+        if self.r>=5000:
+            reward=5000
+            done=True
         if self.r<=self.dist_sep:
             reward=-1000
             done=True
-            
-        if self.t_step>len(self.t)-1: 
-            if self.r<=self.dist_sep:
-                reward=-1000
-            if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
-            done=True
-            
-        if self.r>=5000:
-            if self.r<=self.dist_sep:
-                reward=-1000
-            if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
-            done=True
-            
         if self.t_step>3 and self.r>self.dist_sep and abs(self.elev)>40*self.Deg2Rad and abs(self.azim)>40*self.Deg2Rad:
             if self.r<=self.dist_sep:
                 reward=-1000
             if self.r>self.dist_sep:
-                reward=(self.r-200)**2+1000
+                reward=5000
             done=True
             
         # make a step and observe next state
