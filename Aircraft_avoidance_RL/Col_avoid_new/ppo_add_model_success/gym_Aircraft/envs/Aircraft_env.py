@@ -133,12 +133,12 @@ class AircraftEnv(gym.Env):
 
         # set end condition
         if self.t_step > len(self.t)-1:
-            reward = int(5000*(100-self.height_diff) *
-                         np.log(self.r/100*np.exp(1))/(self.r))
+            reward = int(7000*(100-abs(self.height_diff)) *
+                             np.log(self.r/100*np.exp(1))/(self.r))
             done = True
         if self.r >= 5000:
-            reward = int(5000*(100-self.height_diff) *
-                         np.log(self.r/100*np.exp(1))/(self.r))
+            reward = int(7000*(100-abs(self.height_diff)) *
+                             np.log(self.r/100*np.exp(1))/(self.r))
             done = True
         if self.r <= self.dist_sep:
             reward = -1000
@@ -147,7 +147,7 @@ class AircraftEnv(gym.Env):
             if self.r <= self.dist_sep:
                 reward = -1000
             if self.r > self.dist_sep:
-                reward = int(5000*(100-self.height_diff) *
+                reward = int(7000*(100-abs(self.height_diff)) *
                              np.log(self.r/100*np.exp(1))/(self.r))
             done = True
 
@@ -156,14 +156,17 @@ class AircraftEnv(gym.Env):
             # set an action
             if action == 0:
                 if self.hdot_cmd != 0:
+                    reward-=100
                     self.h_cmd_count += 1
                 self.hdot_cmd = 0
             elif action == 1:
                 if self.hdot_cmd != -20:
+                    reward-=100
                     self.h_cmd_count += 1
                 self.hdot_cmd = -20
             elif action == 2:
                 if self.hdot_cmd != 20:
+                    reward-=100
                     self.h_cmd_count += 1
                 self.hdot_cmd = 20
             else:
