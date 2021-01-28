@@ -8,7 +8,7 @@ from gym.utils import seeding
 
 class AircraftEnv(gym.Env):
 
-    def __init__(self, succeed_coef = 8000, collide_coef = -2000, change_cmd_penalty = -200, cmd_penalty = -1):
+    def __init__(self, succeed_coef = 8000, collide_coef = -2000, change_cmd_penalty = -200, cmd_penalty = -1, start_cond_coef = 1):
         super(AircraftEnv).__init__()
         # initialize reward coefficients
         
@@ -16,6 +16,7 @@ class AircraftEnv(gym.Env):
         self.collide_coef = collide_coef
         self.change_cmd_penalty= change_cmd_penalty
         self.cmd_penalty = cmd_penalty
+        self.start_cond_coef = start_cond_coef
         
         # initialize constants
         
@@ -136,24 +137,24 @@ class AircraftEnv(gym.Env):
         done = False
         reward = 0
 
-        # set end condition
-        if self.t_step > len(self.t)-1:
-            reward = int(self.succeed_coef * (100-abs(self.height_diff)) *
-                             np.log((self.r-90)/10 * np.exp(1))/(10 * (self.r - 90)))
-            done = True
-        if self.r >= 5000:
-            reward = int(self.succeed_coef * (100-abs(self.height_diff)) *
-                             np.log((self.r-90)/10 * np.exp(1))/(10 * (self.r - 90)))
-            done = True
+        # set end condition      
         if self.r <= self.dist_sep:
             reward = self.collide_coef
             done = True
-        if self.t_step > 3 and self.r > self.dist_sep and abs(self.elev) > 40*self.Deg2Rad and abs(self.azim) > 40*self.Deg2Rad:
-            if self.r <= self.dist_sep:
-                reward = self.collide_coef
-            if self.r > self.dist_sep:
-                reward = int(self.succeed_coef * (100-abs(self.height_diff)) *
-                             np.log((self.r-90)/10 * np.exp(1))/(10 * (self.r - 90)))
+        
+        elif self.t_step > len(self.t) - 1:
+            reward = int(self.succeed_coef * (100- self.start_cond_coef * abs(self.height_diff)) *
+                                 np.log((self.r - 90) / 10 * np.exp(1)) / (10 * (self.r - 90)))
+            done = True
+            
+        elif self.r >= 5000:
+            reward = int(self.succeed_coef * (100- self.start_cond_coef * abs(self.height_diff)) *
+                                 np.log((self.r - 90) / 10 * np.exp(1)) / (10 * (self.r - 90)))
+            done = True
+        
+        elif self.t_step > 3 and self.r > self.dist_sep and abs(self.elev) > 40*self.Deg2Rad and abs(self.azim) > 40*self.Deg2Rad:
+            reward = int(self.succeed_coef * (100- self.start_cond_coef * abs(self.height_diff)) *
+                                 np.log((self.r - 90) / 10 * np.exp(1)) / (10 * (self.r - 90)))
             done = True
 
         # make a step and observe next state
@@ -233,7 +234,7 @@ class AircraftEnv(gym.Env):
         return self._state.flatten(), reward, done, {"info": [self.hdot_cmd, self.r, self.elev, self.azim, self.Pm_NED, self.Pt_NED, self.h]}
 
     def reset(self):
-        self.__init__(self.succeed_coef, self.collide_coef, self.change_cmd_penalty, self.cmd_penalty)
+        self.__init__(self.succeed_coef, self.collide_coef, self.change_cmd_penalty, self.cmd_penalty, self.start_cond_coef)
         return self._state
 
     def render(self):
