@@ -49,7 +49,7 @@ class AircraftEnv(gym.Env):
                             0, self.hm0, -self.Vm_NED[2], 0])
 
         # target initial conditions
-        self.ht0 = 1000 + 50*np.random.randn()
+        self.ht0 = 1000 + 50*(2*(np.random.rand())-1)
         self.Vt = 200
         self.approach_angle = 50 * self.Deg2Rad * (2 * np.random.rand() - 1)
         self.psi0 = np.pi + self.approach_angle + 2 * np.random.randn() * self.Deg2Rad
