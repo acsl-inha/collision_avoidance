@@ -8,24 +8,32 @@ from typing import Type, Any, Callable, Union, List, Optional
 
 device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
-def plot(epi_idx, rewards, total_res):
-    plt_res=total_res[-1]
+def plot(epi_idx, rewards, total_res, test_rewards, test_total_res):
+    plt_res = total_res[-1]
+    test_plt_res = test_total_res[-1]
     
     clear_output(True)
     plt.figure(figsize=(20,15))
     plt.subplot(411)
     plt.title('Episodes %s. reward: %s' % (epi_idx, rewards[-1]))
-    plt.plot(rewards),plt.grid()
+    plt.plot(rewards, label = "rewards")
+    plt.plot(test_rewards, label = "rewards-test")
+    plt.grid(),plt.legend()
     
     plt.subplot(412)
     plt.plot(plt_res[:,0], label=r'$\dot{h}_{cmd}$')
-    plt.ylabel(r'$\dot{h}_{cmd}$ ($m/s$)'), plt.grid()
+    plt.plot(test_plt_res[:,0], label=r'$\dot{h}_{cmd-test}$')
+    plt.ylabel(r'$\dot{h}_{cmd}$ ($m/s$)'), plt.grid(), plt.legend()
+    
     plt.subplot(413)
-    plt.plot(plt_res[:,10],label=r'$\{h}$')
-    plt.ylabel(r'$h$ (m)'), plt.grid()
+    plt.plot(plt_res[:,10],label=r'${h}$')
+    plt.plot(test_plt_res[:,10],label=r'${h-test}$')
+    plt.ylabel(r'$h$ (m)'), plt.grid(), plt.legend()
+    
     plt.subplot(414)
-    plt.plot(plt_res[:,1],label=r'$\{r}$')
-    plt.ylabel(r'$r$ (m)'), plt.grid()
+    plt.plot(plt_res[:,1],label=r'${r}$')
+    plt.plot(test_plt_res[:,1],label=r'${r-test}$')
+    plt.ylabel(r'$r$ (m)'), plt.grid(), plt.legend()
     
     plt.legend()
     plt.show()
@@ -107,6 +115,9 @@ class ActorCritic(nn.Module):
         # critic
         self.value_layer = critic_model
         
+        # sampling flag
+        self.sampling_start = False
+        
     def forward(self):
         raise NotImplementedError
         
@@ -114,7 +125,8 @@ class ActorCritic(nn.Module):
         state = torch.from_numpy(state).float().to(device) 
         action_probs = self.action_layer(state)
         dist = Categorical(action_probs)
-        action = dist.sample()
+
+        action = action_probs.max(0)[1]
         
         memory.states.append(state)
         memory.actions.append(action)
