@@ -10,29 +10,29 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def plot(epi_idx, rewards, total_res, test_rewards, test_total_res):
     plt_res = total_res[-1]
-    test_plt_res = total_res[-1]
+    test_plt_res = test_total_res[-1]
     
     clear_output(True)
     plt.figure(figsize=(20,15))
     plt.subplot(411)
     plt.title('Episodes %s. reward: %s' % (epi_idx, rewards[-1]))
     plt.plot(rewards, label = "rewards")
-    plt.plot(test_rewards, label = "rewards_test")
+    plt.plot(test_rewards, label = "rewards-test")
     plt.grid(),plt.legend()
     
     plt.subplot(412)
     plt.plot(plt_res[:,0], label=r'$\dot{h}_{cmd}$')
-    plt.plot(test_plt_res[:,0], label=r'$\dot{h}_{cmd_test}$')
+    plt.plot(test_plt_res[:,0], label=r'$\dot{h}_{cmd-test}$')
     plt.ylabel(r'$\dot{h}_{cmd}$ ($m/s$)'), plt.grid(), plt.legend()
     
     plt.subplot(413)
-    plt.plot(plt_res[:,10],label=r'$\{h}$')
-    plt.plot(test_plt_res[:,10],label=r'$\{h}$')
+    plt.plot(plt_res[:,10],label=r'${h}$')
+    plt.plot(test_plt_res[:,10],label=r'${h-test}$')
     plt.ylabel(r'$h$ (m)'), plt.grid(), plt.legend()
     
     plt.subplot(414)
-    plt.plot(plt_res[:,1],label=r'$\{r}$')
-    plt.plot(test_plt_res[:,1],label=r'$\{r_test}$')
+    plt.plot(plt_res[:,1],label=r'${r}$')
+    plt.plot(test_plt_res[:,1],label=r'${r-test}$')
     plt.ylabel(r'$r$ (m)'), plt.grid(), plt.legend()
     
     plt.legend()
