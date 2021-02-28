@@ -229,7 +229,7 @@ class AircraftEnv(gym.Env):
             self.t_step += 1
             self.h_cmd_suit = self.hdot_cmd * self.height_diff
             
-            if self.h_cmd_suit < 0:
+            if self.h_cmd_suit > 0:
                 reward += np.abs(self.hdot_cmd) * self.t_step * self.cmd_penalty + self.cmd_suit_coef
             else:
                 reward += np.abs(self.hdot_cmd) * self.t_step * self.cmd_penalty
