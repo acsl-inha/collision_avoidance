@@ -1,0 +1,188 @@
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Linear-1                [-1, 1, 20]             120
+         LeakyReLU-2                [-1, 1, 20]               0
+           FClayer-3                [-1, 1, 20]               0
+            Linear-4                [-1, 1, 20]             420
+         LeakyReLU-5                [-1, 1, 20]               0
+           FClayer-6                [-1, 1, 20]               0
+            Linear-7                [-1, 1, 60]           1,260
+         LeakyReLU-8                [-1, 1, 60]               0
+           FClayer-9                [-1, 1, 60]               0
+           Linear-10                [-1, 1, 60]           3,660
+        LeakyReLU-11                [-1, 1, 60]               0
+          FClayer-12                [-1, 1, 60]               0
+           Linear-13                [-1, 1, 40]           2,440
+        LeakyReLU-14                [-1, 1, 40]               0
+          FClayer-15                [-1, 1, 40]               0
+           Linear-16                [-1, 1, 40]           1,640
+        LeakyReLU-17                [-1, 1, 40]               0
+          FClayer-18                [-1, 1, 40]               0
+           Linear-19                 [-1, 1, 3]             123
+================================================================
+Total params: 9,663
+Trainable params: 9,663
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.01
+Params size (MB): 0.04
+Estimated Total Size (MB): 0.04
+----------------------------------------------------------------
+2020/11/25 17:58:49
+epoch: 1/50 | trn loss: 0.1691 | val loss: 0.0519 | val accuracy: 98.4311% 
+
+2020/11/25 17:59:02
+epoch: 2/50 | trn loss: 0.0491 | val loss: 0.0489 | val accuracy: 98.4767% 
+
+2020/11/25 17:59:15
+epoch: 3/50 | trn loss: 0.0420 | val loss: 0.0346 | val accuracy: 99.0900% 
+
+2020/11/25 17:59:29
+epoch: 4/50 | trn loss: 0.0397 | val loss: 0.0454 | val accuracy: 98.4600% 
+
+2020/11/25 17:59:42
+epoch: 5/50 | trn loss: 0.0376 | val loss: 0.0350 | val accuracy: 98.9422% 
+
+2020/11/25 17:59:55
+epoch: 6/50 | trn loss: 0.0368 | val loss: 0.0322 | val accuracy: 98.9444% 
+
+2020/11/25 18:00:08
+epoch: 7/50 | trn loss: 0.0361 | val loss: 0.0295 | val accuracy: 99.1422% 
+
+2020/11/25 18:00:21
+epoch: 8/50 | trn loss: 0.0343 | val loss: 0.0334 | val accuracy: 98.9789% 
+
+2020/11/25 18:00:35
+epoch: 9/50 | trn loss: 0.0335 | val loss: 0.0281 | val accuracy: 99.1922% 
+
+2020/11/25 18:00:49
+epoch: 10/50 | trn loss: 0.0329 | val loss: 0.0333 | val accuracy: 98.9678% 
+
+2020/11/25 18:01:01
+epoch: 11/50 | trn loss: 0.0329 | val loss: 0.0420 | val accuracy: 98.6844% 
+
+2020/11/25 18:01:16
+epoch: 12/50 | trn loss: 0.0326 | val loss: 0.0414 | val accuracy: 98.6344% 
+
+2020/11/25 18:01:29
+epoch: 13/50 | trn loss: 0.0325 | val loss: 0.0364 | val accuracy: 98.7678% 
+
+2020/11/25 18:01:42
+epoch: 14/50 | trn loss: 0.0323 | val loss: 0.0282 | val accuracy: 99.1422% 
+
+2020/11/25 18:01:55
+epoch: 15/50 | trn loss: 0.0325 | val loss: 0.0303 | val accuracy: 99.0811% 
+
+2020/11/25 18:02:07
+epoch: 16/50 | trn loss: 0.0303 | val loss: 0.0393 | val accuracy: 98.8456% 
+
+2020/11/25 18:02:20
+epoch: 17/50 | trn loss: 0.0308 | val loss: 0.0291 | val accuracy: 99.1578% 
+
+2020/11/25 18:02:33
+epoch: 18/50 | trn loss: 0.0309 | val loss: 0.0294 | val accuracy: 99.0844% 
+
+2020/11/25 18:02:46
+epoch: 19/50 | trn loss: 0.0309 | val loss: 0.0260 | val accuracy: 99.2811% 
+
+2020/11/25 18:02:59
+epoch: 20/50 | trn loss: 0.0299 | val loss: 0.0276 | val accuracy: 99.1833% 
+
+2020/11/25 18:03:13
+epoch: 21/50 | trn loss: 0.0248 | val loss: 0.0269 | val accuracy: 99.1867% 
+
+2020/11/25 18:03:26
+epoch: 22/50 | trn loss: 0.0245 | val loss: 0.0259 | val accuracy: 99.1922% 
+
+2020/11/25 18:03:41
+epoch: 23/50 | trn loss: 0.0243 | val loss: 0.0277 | val accuracy: 99.1722% 
+
+2020/11/25 18:03:54
+epoch: 24/50 | trn loss: 0.0242 | val loss: 0.0281 | val accuracy: 99.1744% 
+
+2020/11/25 18:04:08
+epoch: 25/50 | trn loss: 0.0240 | val loss: 0.0275 | val accuracy: 99.1600% 
+
+2020/11/25 18:04:21
+epoch: 26/50 | trn loss: 0.0239 | val loss: 0.0268 | val accuracy: 99.1844% 
+
+2020/11/25 18:04:34
+epoch: 27/50 | trn loss: 0.0238 | val loss: 0.0293 | val accuracy: 99.1111% 
+
+2020/11/25 18:04:47
+epoch: 28/50 | trn loss: 0.0236 | val loss: 0.0275 | val accuracy: 99.1644% 
+
+2020/11/25 18:04:59
+epoch: 29/50 | trn loss: 0.0234 | val loss: 0.0260 | val accuracy: 99.2000% 
+
+2020/11/25 18:05:11
+epoch: 30/50 | trn loss: 0.0234 | val loss: 0.0270 | val accuracy: 99.1444% 
+
+2020/11/25 18:05:24
+epoch: 31/50 | trn loss: 0.0234 | val loss: 0.0276 | val accuracy: 99.1611% 
+
+2020/11/25 18:05:38
+epoch: 32/50 | trn loss: 0.0233 | val loss: 0.0310 | val accuracy: 99.0067% 
+
+2020/11/25 18:05:51
+epoch: 33/50 | trn loss: 0.0231 | val loss: 0.0269 | val accuracy: 99.1867% 
+
+2020/11/25 18:06:05
+epoch: 34/50 | trn loss: 0.0231 | val loss: 0.0295 | val accuracy: 99.0822% 
+
+2020/11/25 18:06:18
+epoch: 35/50 | trn loss: 0.0230 | val loss: 0.0294 | val accuracy: 99.0267% 
+
+2020/11/25 18:06:31
+epoch: 36/50 | trn loss: 0.0229 | val loss: 0.0258 | val accuracy: 99.2111% 
+
+2020/11/25 18:06:44
+epoch: 37/50 | trn loss: 0.0229 | val loss: 0.0238 | val accuracy: 99.3622% 
+
+2020/11/25 18:06:57
+epoch: 38/50 | trn loss: 0.0229 | val loss: 0.0266 | val accuracy: 99.1944% 
+
+2020/11/25 18:07:09
+epoch: 39/50 | trn loss: 0.0227 | val loss: 0.0258 | val accuracy: 99.2211% 
+
+2020/11/25 18:07:22
+epoch: 40/50 | trn loss: 0.0227 | val loss: 0.0252 | val accuracy: 99.2333% 
+
+2020/11/25 18:07:35
+epoch: 41/50 | trn loss: 0.0220 | val loss: 0.0269 | val accuracy: 99.1911% 
+
+2020/11/25 18:07:48
+epoch: 42/50 | trn loss: 0.0220 | val loss: 0.0273 | val accuracy: 99.1811% 
+
+2020/11/25 18:08:01
+epoch: 43/50 | trn loss: 0.0220 | val loss: 0.0264 | val accuracy: 99.2144% 
+
+2020/11/25 18:08:14
+epoch: 44/50 | trn loss: 0.0220 | val loss: 0.0268 | val accuracy: 99.2022% 
+
+2020/11/25 18:08:27
+epoch: 45/50 | trn loss: 0.0219 | val loss: 0.0269 | val accuracy: 99.1989% 
+
+2020/11/25 18:08:39
+epoch: 46/50 | trn loss: 0.0219 | val loss: 0.0256 | val accuracy: 99.2311% 
+
+2020/11/25 18:08:52
+epoch: 47/50 | trn loss: 0.0219 | val loss: 0.0274 | val accuracy: 99.1778% 
+
+2020/11/25 18:09:05
+epoch: 48/50 | trn loss: 0.0219 | val loss: 0.0273 | val accuracy: 99.1822% 
+
+2020/11/25 18:09:17
+epoch: 49/50 | trn loss: 0.0219 | val loss: 0.0276 | val accuracy: 99.1722% 
+
+2020/11/25 18:09:30
+epoch: 50/50 | trn loss: 0.0219 | val loss: 0.0267 | val accuracy: 99.2111% 
+
+error with test down sim 500:  0
+Mean avoiding distance of correct avoidance with correction 500:  133.36422470700523
+error with test up sim 500:  0
+Mean avoiding distance of correct avoidance with correction 500:  130.7985982409213
+Mean avoiding distance both up and down:  132.08141147396327
+error with test stay sim 500:  0
