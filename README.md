@@ -6,8 +6,8 @@ Aircraft detection and Collision avoidance
 | [Aircraft_avoidance_policy_net](Aircraft_avoidance_policy_net) | 박건우 |
 | [Aircraft_avoidance_RL](Aircraft_avoidance_RL) | 박건우 |
 | [Aircraft_detection](Aircraft_detection) | 이효건 | [results (notion)](https://www.notion.so/0a2f0a99d296481a835b91e44be43149?v=446672df0798481eab056e5cc5906e9e)
-| [UDP_jetson](UDP_jetson) | 박건우 |
-|[YOLOV4 Deepstream](custom_deepstream) | 박건우 |
+| [UDP_jetson](UDP_jetson) | 박건우 | [Refactored results](https://github.com/kun-woo-park/YOLOV4_UDP_Jetson/tree/master)
+|[YOLOV4 Deepstream](custom_deepstream) | 박건우 | [Refactored results](https://github.com/kun-woo-park/YOLOV4_UDP_Jetson/tree/master)
 | DBPAS | 인하대학교 | https://drive.google.com/file/d/1IMLpdmeMIFQ4wNjOqwPxfTnxNvAgnTA8/view?usp=sharing |
 
 
